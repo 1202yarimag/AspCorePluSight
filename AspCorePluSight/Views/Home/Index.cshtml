@@ -1,0 +1,31 @@
+﻿
+@model AspCorePluSight.ViewModels.HomeIndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<h1>
+    @Model.CurrentMessage
+
+</h1>
+
+<button type="button" class="btn btn-success">Warning............</button>
+
+
+@foreach (var restaurant in Model.Restaurants)
+{
+    @Html.Partial("_Summary", restaurant)
+
+}
+<a asp-action="Create" asp-controller="Home">Create new...</a>
+<hr />
+@section footer {
+
+    @Model.CurrentMessage
+
+}

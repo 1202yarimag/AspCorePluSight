@@ -1,0 +1,48 @@
+﻿@model Auto
+@{
+    ViewBag.Title = "Create";
+}
+
+<form  method="post">
+    <table>
+        <tr>
+            <td>
+                <label asp-for="Name"></label>
+                <input asp-for="Name" />
+                <span asp-validation-for="Name" ></span>
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+
+                <label asp-for="brand"></label>
+                <select asp-for="brand" asp-items="@Html.GetEnumSelectList<Brand>()"></select>
+                <span asp-validation-for="brand"></span>
+            </td>
+        </tr>
+        <tr>
+           <td>
+               <label asp-for="Power"></label>
+               <input asp-for="Power" />
+               <span asp-validation-for="Power"></span>
+           </td> 
+
+        </tr>
+        <tr>
+            <td>
+                @Html.AntiForgeryToken()
+
+                <input type="submit" style="background-color:aquamarine" name="save" value="Save" />
+            </td>
+        </tr>
+    </table>
+
+
+
+
+
+
+
+
+</form>

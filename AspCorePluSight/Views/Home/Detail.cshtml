@@ -1,0 +1,31 @@
+﻿@*@model AspCorePluSight.Models.Restaurant*@
+@model Restaurant
+
+@{
+
+    ViewBag.Title = "Detail";
+}
+@if (Model == null)
+{
+    <div> <label>Not Found Exception </label> </div>
+}
+else
+{
+
+    <h3>Id:   @Model.Id </h3>
+    <h3>
+        Name:
+        @Model.Name
+    </h3>
+    <h3>
+        Cuisine:
+        @Model.Cuisine
+    </h3>
+}
+<label>
+    <a asp-action="Index" asp-controller="Home">Home</a>
+</label>
+@section footer {
+    <a asp-action="Index" asp-controller="Home">Home</a>
+}
+

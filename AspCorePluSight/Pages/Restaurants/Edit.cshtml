@@ -1,0 +1,33 @@
+﻿@page "{id}"
+@using AspCorePluSight.Pages.Restaurants
+@model EditModel
+
+<h1>Edit @Model.Restaurant.Name </h1>
+<form  method="post">
+    <input type="hidden" asp-for="Restaurant.Id" />
+<table>
+    <tr>
+        <td>
+            <div>
+                <label asp-for="Restaurant.Name"> </label>
+                <input asp-for="Restaurant.Name" />
+                <span asp-validation-for="Restaurant.Name"></span>
+            </div>
+        </td>
+        <td>
+            <div>
+                <label asp-for="Restaurant.Cuisine">   </label>
+                <select asp-for="Restaurant.Cuisine" asp-items="@Html.GetEnumSelectList<CuisineType>()"></select>
+                <span asp-validation-for="Restaurant.Cuisine"></span>
+            </div>
+        </td>
+        <td>
+            @Html.AntiForgeryToken()
+            <input type="submit" style="background-color:aquamarine" name="save" value="Save" />
+        </td>
+    </tr>
+</table>
+
+
+
+</form>

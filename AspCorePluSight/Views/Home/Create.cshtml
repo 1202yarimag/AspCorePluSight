@@ -1,0 +1,39 @@
+﻿@model Restaurant
+
+    @{
+        ViewBag.Title = "Create";
+    }
+<h1>  Create  </h1>
+
+<form  method="post">
+    @*<input type="text" name="Name" value="" />*@
+    <table>
+        <tr>
+            <td>
+                <div>
+                    <label asp-for="Name"> </label>
+                    <input asp-for="Name" />
+                    <span asp-validation-for="Name"></span>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <label asp-for="Cuisine">   </label>
+                    <select asp-for="Cuisine" asp-items="@Html.GetEnumSelectList<CuisineType>()"></select>
+                    <span asp-validation-for="Cuisine"></span>
+                </div>
+            </td>
+            <td>
+                @Html.AntiForgeryToken()
+                <input type="submit" style="background-color:aquamarine" name="save" value="Save" />
+            </td>
+        </tr>
+    </table>
+   
+  
+   
+</form>
+@section footer{ 
+    <a asp-action="Index" asp-controller="Home">Back To Home </a> &nbsp; &nbsp;
+    @Html.ActionLink("Back To Home", "Index", "Home")
+}

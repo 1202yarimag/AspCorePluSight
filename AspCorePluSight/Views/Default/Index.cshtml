@@ -1,0 +1,25 @@
+﻿@*@model IEnumerable<Auto>*@
+
+@model AspCorePluSight.ViewModels.MixedViewModel
+
+<a asp-action="Index" asp-controller="Home">Home...</a>
+<h3>   Auto </h3>
+@foreach (Auto item in Model.Autos)
+{
+    <br />
+    <label>
+        @item.brand - @item.Name => @item.Power HP
+    </label>
+    <a asp-action="Detail" asp-controller="Default" asp-route-id="@item.Id">Detail...</a>
+    <br />
+}
+<h3>  Rests  </h3>
+@foreach (Restaurant item in Model.Restaurants)
+{
+    <br />
+    <label>@item.Name =>> @item.Cuisine </label>
+    <a asp-action="Detail" asp-controller="Home" asp-route-id="@item.Id">Detail...</a>
+
+    <br />
+}
+<br />
