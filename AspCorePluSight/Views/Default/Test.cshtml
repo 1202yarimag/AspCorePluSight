@@ -1,0 +1,17 @@
+﻿@model AspCorePluSight.ViewModels.TestMixedViewModel
+<h1>Union</h1>
+
+@foreach (var item in Model.Unions)
+{
+    <label>@item.ToString()</label> 
+}
+                                    <h1>Intersect</h1>
+@foreach (var item in Model.Intersects)
+{
+    <label>@item.ToString()</label>
+}
+    <h1>  Except  </h1>
+@foreach (var item in Model.Excepts)
+{
+    <label>@item.ToString()</label>
+}

@@ -15,10 +15,18 @@ namespace AspCorePluSight.Middleware
             var path = Path.Combine(root, "node_modules");
             var fileProvider = new PhysicalFileProvider(path);
             var options = new StaticFileOptions();
-            options.RequestPath = "/node_modules";
+            options.RequestPath = "/node_modules"; 
             options.FileProvider = fileProvider;
             app.UseStaticFiles(options);
             return app;
+        }
+       
+    }
+    public static class RequestMetricMiddlewareExtensions
+    {
+        public static IApplicationBuilder UseRequestMetrics(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<RequestMetricMiddleware>();
         }
     }
 }

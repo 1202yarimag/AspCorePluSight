@@ -30,12 +30,17 @@ namespace AspCorePluSight
         }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache();
+            Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
+
+            services.AddSession();
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
-            .AddOpenIdConnect(options => {
+            .AddOpenIdConnect(options =>
+            {
 
                 _configuration.Bind("AzureAd", options);
             }).AddCookie();
@@ -45,12 +50,15 @@ namespace AspCorePluSight
                                                           Initial Catalog = OdeToFood; Integrated Security = True; MultipleActiveResultSets=True"));
             services.AddScoped<IRestaurantData, SqlRestaurantData>();
             services.AddScoped<IAuto, InMemoryAutoData>();
+            services.AddScoped<ITest, InMemoryTestData>();
             services.AddMvc();
-            services.AddLogging();
-            services.AddDistributedRedisCache(option => {
-                option.Configuration = @"https://localhost:44358";
-                option.InstanceName = @"master";
+            services.AddDistributedRedisCache(option =>
+            {
+                option.Configuration = "127.0.0.1";
+                option.InstanceName = "master";
             });
+            services.AddLogging();
+
         }
 
 
@@ -62,14 +70,15 @@ namespace AspCorePluSight
         //        app.UseDeveloperExceptionPage();
         //    }
 
-            //    app.Run(async (context) =>
+        //    app.Run(async (context) =>
         //    {
         //        var greeting = configuration["Greeting"];
         //        await context.Response.WriteAsync(greeting);
         //    });
         //}
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IGreeter greeter,ILogger<Startup> logger, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IGreeter greeter, ILogger<Startup> logger, ILoggerFactory loggerFactory)
         {
+           
             //if (env.IsDevelopment())
             //{
             //app.UseDeveloperExceptionPage();
@@ -94,14 +103,8 @@ namespace AspCorePluSight
             //    };
 
             //    });
-            loggerFactory
-        .AddDebug();
 
-            // add Trace Source logging
-            var testSwitch = new SourceSwitch("sourceSwitch", "Logging Sample");
-            testSwitch.Level = SourceLevels.All;
-            loggerFactory.AddTraceSource(testSwitch,
-                new TextWriterTraceListener(writer: Console.Out));
+
 
             app.UseRewriter(new RewriteOptions().AddRedirectToHttpsPermanent());
             app.UseStaticFiles();
@@ -114,13 +117,15 @@ namespace AspCorePluSight
             //app.UseDefaultFiles();
             //app.UseFileServer();
             app.UseCookiePolicy();
+            app.UseRequestMetrics();
+
             app.Run(async (context) =>
             {
                 //throw new Exception("Hata!!!");
                 var greeting = greeter.GetMessage();
                 context.Response.ContentType = "text/plain";
                 await context.Response.WriteAsync($"Not found");
-             
+
                 //await context.Response.WriteAsync($"{greeting} : {env.EnvironmentName}");
             });
         }
@@ -132,8 +137,7 @@ namespace AspCorePluSight
      template: "{controller}/{action}/{id?}",
      defaults: new { controller = "Home", action = "Index" });
 
-          
+
         }
     }
 }
- 

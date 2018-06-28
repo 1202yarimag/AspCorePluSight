@@ -18,7 +18,10 @@ namespace AspCorePluSight.Controllers
        
             public async Task<IActionResult> Phone()
             {
-                var cacheKey = "Time";
+                      ViewBag.Response=HttpContext.Response.ToString();
+            ViewBag.Request=HttpContext.Request.ToString();
+            //ViewBag.Session = HttpContext.Session;
+            var cacheKey = "Time";
                 var existingTime = _distributedCache.GetString(cacheKey);
                 if (string.IsNullOrEmpty(existingTime))
                 {

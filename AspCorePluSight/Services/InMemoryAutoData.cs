@@ -16,6 +16,9 @@ namespace AspCorePluSight.Services
                 new Auto { Id = 2, brand = Brand.Honda, Name = "Civic", Power = 150 } ,
             new Auto { Id=3, brand=Brand.Opel, Name="Astra", Power=180 },
             new Auto { Id=4, brand=Brand.Toyota, Name="Corolla", Power=200 }};
+
+
+
         }
 
         public Auto Add(Auto newAuto)
