@@ -11,5 +11,6 @@ namespace AspCorePluSight.Services
         IEnumerable<Auto> GetData();
         Auto Get(int id);
         Auto Add(Auto newAuto);
+        Auto Update(Auto auto);
     }
 }

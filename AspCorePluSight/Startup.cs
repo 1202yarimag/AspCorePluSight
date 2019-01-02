@@ -1,35 +1,44 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using AspCorePluSight.Data;
 using AspCorePluSight.Middleware;
+using AspCorePluSight.Models;
 using AspCorePluSight.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SimpleInjector;
+using SimpleInjector.Integration.AspNetCore.Mvc;
+using SimpleInjector.Lifestyles;
 
 namespace AspCorePluSight
 {
     public class Startup
     {
-        private IConfiguration _configuration;
+        private Container _container;
+        private  IConfiguration _configuration;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public Startup(IConfiguration configuration)
         {
+            _container = new Container();
+
             _configuration = configuration;
 
         }
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddMemoryCache();
             Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
 
@@ -45,19 +54,27 @@ namespace AspCorePluSight
                 _configuration.Bind("AzureAd", options);
             }).AddCookie();
             services.AddSingleton<IGreeter, Greeter>();
+            
+
             //services.AddSingleton<IRestaurantData, InMemoryRestaurantData>();
-            services.AddDbContext<OdeToFoodDbContext>(options => options.UseSqlServer(@"Data Source = (localdb)\MSSQLLocalDB;
-                                                          Initial Catalog = OdeToFood; Integrated Security = True; MultipleActiveResultSets=True"));
+            services.AddDbContext<OdeToFodDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("OdeToFoodConnection")));
+            //services.AddDbContext<AutoRestoDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("AutoConnection")));
             services.AddScoped<IRestaurantData, SqlRestaurantData>();
             services.AddScoped<IAuto, InMemoryAutoData>();
             services.AddScoped<ITest, InMemoryTestData>();
+            services.AddScoped<IMongo, MongoRepo>();
+            services.AddScoped<IApiClient<HomeApiResponseModel>, ApiClient<HomeApiResponseModel>>();
             services.AddMvc();
-            services.AddDistributedRedisCache(option =>
+
+
+            
+
+            services.AddDistributedRedisCache(options =>
             {
-                option.Configuration = "127.0.0.1";
-                option.InstanceName = "master";
+                _configuration.Bind("Redis", options);
             });
             services.AddLogging();
+           
 
         }
 
@@ -78,7 +95,7 @@ namespace AspCorePluSight
         //}
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IGreeter greeter, ILogger<Startup> logger, ILoggerFactory loggerFactory)
         {
-           
+
             //if (env.IsDevelopment())
             //{
             //app.UseDeveloperExceptionPage();
@@ -103,8 +120,7 @@ namespace AspCorePluSight
             //    };
 
             //    });
-
-
+          
 
             app.UseRewriter(new RewriteOptions().AddRedirectToHttpsPermanent());
             app.UseStaticFiles();
@@ -139,5 +155,6 @@ namespace AspCorePluSight
 
 
         }
+       
     }
 }

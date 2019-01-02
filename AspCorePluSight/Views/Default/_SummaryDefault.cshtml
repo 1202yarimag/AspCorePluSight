@@ -1,0 +1,10 @@
+﻿@model Auto
+
+<section>
+
+    <label>@Model.Power   ~Horse Power </label>
+    <a asp-action="Detail" asp-controller="Default" asp-route-id="@Model.Id">Detail... &#10083;</a>    <br />
+    <a asp-page="/Autos/Edit" asp-route-id="@Model.Id">Edit... &#9986;</a>    <br />
+    <img src=@Model.ImageUrl alt="W3Schools.com" style="width:104px;height:142px;">    <br />
+
+</section>

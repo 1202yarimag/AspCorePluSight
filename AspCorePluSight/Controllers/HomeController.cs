@@ -3,12 +3,10 @@ using AspCorePluSight.Services;
 using AspCorePluSight.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AspCorePluSight.Controllers
 {
@@ -30,6 +28,26 @@ namespace AspCorePluSight.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
+            //MemoryCacheEntryOptions cacheExpirationOptions = new MemoryCacheEntryOptions();
+            //cacheExpirationOptions.AbsoluteExpiration = DateTime.Now.AddMinutes(30);
+            //cacheExpirationOptions.Priority = CacheItemPriority.Normal;
+            ViewBag.getOrCreate = _memorycache.GetOrCreate<string>("getOr",cacheEntry => {
+                return DateTime.Now.ToString()+" --------Cache--------";
+            });
+
+            
+            DateTime CacheEntry;
+
+            if (!_memorycache.TryGetValue("newCache", out CacheEntry))
+            {
+                CacheEntry = DateTime.Now;
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.High).SetSlidingExpiration(TimeSpan.FromSeconds(10));
+                _memorycache.Set("newCache", CacheEntry, cacheEntryOptions);
+            }
+
+            ViewBag.Cache = CacheEntry.ToString();
+           // _memorycache.Remove("newCache");
+            //ViewBag.Removed = CacheEntry.ToString();
             //var model = new Restaurant { Id = 1, Name = "Scotty's Place" };
             //return Content("Hello from mörika");
             //return new ObjectResult(model);      
@@ -44,11 +62,9 @@ namespace AspCorePluSight.Controllers
         }
         public IActionResult Detail(int id)
         {
-
-           
-          
+            
             _logger.LogInformation("Home/Detail Executing...");
-
+           
             var model = _restaurantData.Get(id);
             //if (model==null)
             //{
@@ -65,6 +81,7 @@ namespace AspCorePluSight.Controllers
         {
             //if (User.Identity.IsAuthenticated)
             _logger.LogInformation("Home/Create Executing...");
+           
 
             return View();
         }
@@ -87,10 +104,8 @@ namespace AspCorePluSight.Controllers
 
                 return RedirectToAction(nameof(Detail), new { id = newRestaurant.Id });
             }
-            else
-            {
-                return View();
-            }
+
+            return View();
 
         }
 

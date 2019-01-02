@@ -1,0 +1,35 @@
+﻿@model Person
+
+<table>
+    <tr>
+        <td>Name :</td>
+        <td>  <input type="text" id="txtName" value="@Model.Name"/> </td>
+    </tr>
+    <tr>
+        <td>
+            Age :
+        </td>
+        <td>
+            <input type="number" id="numAge" value="@Model.Age" />
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            Surname :
+        </td>
+        <td>
+            <input type="Text" id="txtSurname" value="@Model.Surname" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+             Gender :
+        </td>
+        <td>
+            <input type="checkbox" name="gender" id="chckMail" checked="@(Model.Gender == Gender.Male)" />&#9794; Male
+            <input type="checkbox" name="gender" id="chckMail" checked="@(Model.Gender == Gender.Female)" />&#9792; Female
+        </td>
+    </tr>
+</table>
+

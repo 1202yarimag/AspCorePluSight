@@ -9,9 +9,9 @@ namespace AspCorePluSight.Services
 {
     public class SqlRestaurantData : IRestaurantData
     {
-        private OdeToFoodDbContext _context;
+        private OdeToFodDbContext _context;
 
-        public SqlRestaurantData(OdeToFoodDbContext context)
+        public SqlRestaurantData(OdeToFodDbContext context)
         {
             _context = context;
         }

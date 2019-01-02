@@ -2,8 +2,11 @@
 
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <environment include="Development">
-
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <link href="~/node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
         <link href="~/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     </environment>
@@ -13,21 +16,30 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
               crossorigin="anonymous">
-        <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css"
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css"
               asp-fallback-href="~/node_modules/bootstrap/dist/css/bootstrap.css"
-              asp-fallback-test-class="sr-only"  asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
               crossorigin="anonymous">
-        
+
     </environment>
-    <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    @RenderSection("Header", required: false)
+
 </head>
 <body>
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a href="/" class="navbar-brand">Ode To Food</a>
+                <a asp-action="Index" asp-controller="Mongo">Mongo</a>
+                <a asp-action="Index" asp-controller="Default">Default</a>
+                <a asp-action="Index" asp-controller="Jquery">Jquery</a>
+                <a asp-action="Index" asp-controller="Redis">Redis</a>
+                <a asp-action="Index" asp-controller="Default">Default</a>
+
+
+
             </div>
             <div class="navbar-right">
                 <vc:login-logout></vc:login-logout>

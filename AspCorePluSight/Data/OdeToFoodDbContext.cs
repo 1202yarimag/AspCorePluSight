@@ -4,12 +4,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AspCorePluSight.Data
 {
-    public class OdeToFoodDbContext:DbContext
+    public class OdeToFodDbContext:DbContext
     {
-        public OdeToFoodDbContext(DbContextOptions options) :base(options)
+        public OdeToFodDbContext(DbContextOptions options) :base(options)
         {
 
         }
         public DbSet <Restaurant> Restaurants { get; set; }
+
+        public DbSet<Auto> Autos{ get; set; }
+
+        public DbSet<Student> Students { get; set; }
+
     }
 }

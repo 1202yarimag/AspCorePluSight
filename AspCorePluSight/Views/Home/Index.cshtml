@@ -1,13 +1,25 @@
-﻿
-@model AspCorePluSight.ViewModels.HomeIndexViewModel
+﻿@model AspCorePluSight.ViewModels.HomeIndexViewModel
 
 @{
+
     ViewBag.Title = "Index";
     //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<label> without cache =>> @DateTime.Now </label> <br />
+<label> cache=>> @(ViewBag.Cache==null ? "No Cache" : ViewBag.Cache)   </label>
+<label>getOrCreate =>> @ViewBag.getOrCreate </label>
+<br />
+
+<b>
+    <label>
+        @(User.Identity.IsAuthenticated==true ? User.Identity.Name :"Log In...")
+    </label>
+</b>
 
 
+
+<a asp-action="Index" asp-controller="Default"> Default Index</a>
 <h1>
     @Model.CurrentMessage
 
@@ -15,17 +27,19 @@
 
 <button type="button" class="btn btn-success">Warning............</button>
 
-
 @foreach (var restaurant in Model.Restaurants)
 {
     @Html.Partial("_Summary", restaurant)
 
 }
+
+
 <a asp-action="Create" asp-controller="Home">Create new...</a>
-<hr />
+
+@*<hr />
 @section footer {
 
     @Model.CurrentMessage
 
-}
+}*@
 

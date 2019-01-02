@@ -10,6 +10,7 @@ namespace AspCorePluSight.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int Power { get; set; }
+        public string ImageUrl { get; set; }
         public Brand brand { get; set; }
     }
 }

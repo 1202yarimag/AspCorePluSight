@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using AspCorePluSight.Models;
 using AspCorePluSight.Services;
 using AspCorePluSight.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
@@ -21,9 +23,11 @@ namespace AspCorePluSight.Controllers
         private IRestaurantData _restaurantData;
         private IAuto _auto;
         private IEnumerable<int> _benzersiz;
+        private IDistributedCache _distributedCache;
 
-        public DefaultController(IAuto auto, IRestaurantData restaurantData, ILogger<HomeController> logger, IMemoryCache memoryCache,ITest test)
+        public DefaultController(IAuto auto, IRestaurantData restaurantData, ILogger<HomeController> logger, IDistributedCache distributedCache, IMemoryCache memoryCache,ITest test)
         {
+            _distributedCache = distributedCache;
             _test = test;
             _cache = memoryCache;
             _logger = logger;
@@ -40,7 +44,7 @@ namespace AspCorePluSight.Controllers
         public IActionResult Detail(int id)
         {
             var model = _auto.Get(id);
-
+         
             return View(model);
         }
         [HttpGet]
@@ -64,8 +68,8 @@ namespace AspCorePluSight.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(AutoEditModel autoEditModel)
         {
-
            
+
 
             if (ModelState.IsValid)
             {
@@ -92,6 +96,9 @@ namespace AspCorePluSight.Controllers
             model.Unions = _test.Union();
             model.Intersects = _test.Intersect();
             model.Excepts = _test.Except();
+            model.Concats = _test.Concat();
+            model.Filter = _test.Filter();
+
             
             return View(model);
         }
@@ -119,6 +126,42 @@ namespace AspCorePluSight.Controllers
             return View("Cache", cacheEntry);
         }
 
+        public async  Task<IActionResult> Redis()
+        {
+            //  var cacheKey ="IDG";
+            //  _distributedCache.Remove(cacheKey);
+            //  _distributedCache.Remove("ping");
+
+            //  var data = _distributedCache.GetString(cacheKey);
+
+            //if (!string.IsNullOrEmpty(data))
+            //{
+            //    ViewBag.redis = _distributedCache.GetString("ping");
+
+            //      //ViewBag.redis= data.ToString(); //returned from Cache
+            //  }
+            //  else
+            //{
+
+
+            //     ViewBag.redis= _distributedCache.GetString("ping");
+            //  }
+
+            var cacheKey = "Time";
+            var existingTime = _distributedCache.GetString(cacheKey);
+            if (string.IsNullOrEmpty(existingTime))
+            {
+                existingTime = DateTime.UtcNow.ToString();
+                var option = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(5));
+                option.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5);
+                string name = await _distributedCache.GetStringAsync("Name");
+                await _distributedCache.SetStringAsync(cacheKey, $"{name}: {existingTime}", option);
+
+            }
+            ViewBag.Time = await _distributedCache.GetStringAsync(cacheKey);
+
+            return View();
+        }
         //public IActionResult CacheGetOrCreate()
         //{
         //    var cacheEntry = _cache.GetOrCreate(CacheKeys.Entry, entry =>
@@ -146,6 +189,14 @@ namespace AspCorePluSight.Controllers
         //    var cacheEntry = _cache.Get<DateTime?>(CacheKeys.Entry);
         //    return View("Cache", cacheEntry);
         //}
+
+
+        public IActionResult Dictionary()
+        {
+            Dictionary <int,string> a = new Dictionary<int,string>();
+            a.Add(0, "Hakan");
+            return View(a);
+        }
 
     }
 }

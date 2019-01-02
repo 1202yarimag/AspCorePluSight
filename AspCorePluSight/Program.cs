@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
 using Serilog.Events;
-using Serilog.Settings;
 namespace AspCorePluSight
 {
     public class Program
@@ -18,8 +17,8 @@ namespace AspCorePluSight
                 .UseSerilog((ctx, cfg) =>
                    {
                        cfg.ReadFrom.Configuration(ctx.Configuration)
-                       .MinimumLevel.Information()
-                       .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                       .MinimumLevel.Error()
+                       .MinimumLevel.Override("Microsoft", LogEventLevel.Error)
                        .Enrich.FromLogContext()
                        .Enrich.WithMachineName()
                        .Enrich.WithProperty("Application", ctx.Configuration["Application"])

@@ -11,16 +11,33 @@ using System;
 
 namespace AspCorePluSight.Migrations
 {
-    [DbContext(typeof(OdeToFoodDbContext))]
-    [Migration("20180612064848_InitialCreate")]
-    partial class InitialCreate
+    [DbContext(typeof(OdeToFodDbContext))]
+    partial class OdeToFodDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.3-rtm-10026")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("AspCorePluSight.Models.Auto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ImageUrl");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("Power");
+
+                    b.Property<int>("brand");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Autos");
+                });
 
             modelBuilder.Entity("AspCorePluSight.Models.Restaurant", b =>
                 {
@@ -36,6 +53,20 @@ namespace AspCorePluSight.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Restaurants");
+                });
+
+            modelBuilder.Entity("AspCorePluSight.Models.Student", b =>
+                {
+                    b.Property<int>("StudentID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Age");
+
+                    b.Property<string>("StudentName");
+
+                    b.HasKey("StudentID");
+
+                    b.ToTable("Students");
                 });
 #pragma warning restore 612, 618
         }

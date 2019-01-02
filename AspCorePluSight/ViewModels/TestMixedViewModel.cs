@@ -10,7 +10,9 @@ namespace AspCorePluSight.ViewModels
         public IEnumerable<int> Excepts { get; set; }
         public IEnumerable<int> Unions { get; set; }
         public IEnumerable<int> Intersects { get; set; }
+        public IEnumerable<int> Concats { get; set; }
 
+        public IEnumerable<int> Filter { get; set; }
 
     }
 }

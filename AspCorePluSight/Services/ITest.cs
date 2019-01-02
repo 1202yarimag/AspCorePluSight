@@ -11,7 +11,9 @@ namespace AspCorePluSight.Services
         IEnumerable<int> Except();
         IEnumerable<int> Intersect();
         IEnumerable<int> Union();
-      
+        IEnumerable<int> Concat();
+
+        IEnumerable<int> Filter();
 
 
     }

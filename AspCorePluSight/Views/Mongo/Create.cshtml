@@ -1,0 +1,38 @@
+﻿@model Customer
+@{ 
+    ViewBag.title = "Create";
+}
+
+<form  method="post">
+    <table>
+        <tr >
+            <td rowspan="3">
+                <label asp-for="CustomerName"></label>
+                <input asp-for="CustomerName" />
+                <span asp-validation-for="CustomerName"></span>
+            </td>
+           
+        </tr>
+        <tr>
+
+            <td rowspan="3">
+                <label asp-for="Address"></label>
+                <input asp-for="Address" />
+                <span asp-validation-for="Address"></span>
+            </td>
+
+
+        </tr>
+
+        <tr>
+            <td>
+                <input type="submit" value="Add" name="btnSave" id="btnSave" style="background-color:aqua" />
+            </td>
+
+        </tr>
+    </table>
+
+
+
+</form>
+
